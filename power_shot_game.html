@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Basketball Power Shot Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    #game {
+      position: relative;
+      width: 400px;
+      height: 500px;
+      margin: 20px auto;
+      background-color: #e1f5fe;
+      border: 2px solid #0288d1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #hoop {
+      position: absolute;
+      top: 60px;
+      left: 160px;
+      width: 80px;
+      height: 10px;
+      background-color: orange;
+      border-radius: 5px;
+    }
+    #player {
+      position: absolute;
+      bottom: 20px;
+      left: 180px;
+      width: 40px;
+      height: 60px;
+      background-color: #6d4c41;
+      border-radius: 5px;
+    }
+    #ball {
+      position: absolute;
+      bottom: 80px;
+      left: 190px;
+      width: 20px;
+      height: 20px;
+      background-color: brown;
+      border-radius: 50%;
+      display: none;
+    }
+    #score {
+      font-size: 24px;
+      margin: 10px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🏀 Power Shot Game</h1>
+<div id="score">Score: 0</div>
+<div id="game">
+  <div id="hoop"></div>
+  <div id="player"></div>
+  <div id="ball"></div>
+</div>
+<button id="shootButton">Hold to Power, Release to Shoot</button>
+
+<script>
+  let score = 0;
+  let ball = document.getElementById("ball");
+  let button = document.getElementById("shootButton");
+  let powerStart = 0;
+  let shootInterval;
+
+  button.onmousedown = () => {
+    powerStart = Date.now();
+  };
+
+  button.onmouseup = () => {
+    let powerDuration = Date.now() - powerStart;
+    let power = Math.min(powerDuration / 10, 100); // Cap power
+
+    shoot(power);
+  };
+
+  function shoot(power) {
+    ball.style.display = "block";
+    ball.style.bottom = "80px";
+    ball.style.left = "190px";
+
+    let distance = power * 3; // scale power to distance
+    let current = 80;
+    let step = 4;
+    let traveled = 0;
+
+    shootInterval = setInterval(() => {
+      if (traveled >= distance) {
+        clearInterval(shootInterval);
+        checkShot(distance);
+        ball.style.display = "none";
+      } else {
+        current += step;
+        ball.style.bottom = current + "px";
+        traveled += step;
+      }
+    }, 16);
+  }
+
+  function checkShot(distance) {
+    // Range for successful shot (around hoop at 60px from top or ~440px from bottom)
+    if (distance > 105 && distance < 120) {
+      score++;
+      alert("🏀 Swish! +1 point");
+    } else {
+      alert("❌ Missed!");
+    }
+    document.getElementById("score").textContent = "Score: " + score;
+  }
+</script>
+
+</body>
+</html>
