@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Free Throw Game - Animated</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    #game {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      margin: 20px auto;
+      background-color: #e0f7fa;
+      border: 2px solid #00796b;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #hoop {
+      width: 100px;
+      height: 10px;
+      background-color: orange;
+      position: absolute;
+      top: 50px;
+      left: 100px;
+    }
+    #marker {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+      top: 50px;
+      left: 140px;
+    }
+    #ball {
+      width: 20px;
+      height: 20px;
+      background-color: brown;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 20px;
+      left: 140px;
+      transition: top 0.6s linear;
+      display: none;
+    }
+    #score {
+      font-size: 24px;
+      margin: 10px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🏀 Free Throw Game</h1>
+<div id="score">Score: 0</div>
+<div id="game">
+  <div id="hoop"></div>
+  <div id="marker"></div>
+  <div id="ball"></div>
+</div>
+<button onclick="shoot()">Shoot!</button>
+
+<script>
+  let score = 0;
+  let ball = document.getElementById("ball");
+  let marker = document.getElementById("marker");
+  let markerPos = 0;
+  let direction = 2;
+
+  function moveMarker() {
+    markerPos += direction;
+    if (markerPos > 80 || markerPos < 0) direction *= -1;
+    marker.style.left = (140 + markerPos - 40) + "px";
+    requestAnimationFrame(moveMarker);
+  }
+
+  function shoot() {
+    if (ball.style.display === "block") return; // Prevent spamming
+
+    ball.style.display = "block";
+    ball.style.top = "50px";
+
+    setTimeout(() => {
+      let ballX = parseInt(ball.style.left);
+      let markerX = parseInt(marker.style.left);
+      let hit = Math.abs(ballX - markerX) < 15;
+
+      if (hit) {
+        score++;
+        alert("🏀 Score!");
+      } else {
+        score = 0;
+        alert("❌ Missed!");
+      }
+
+      document.getElementById("score").textContent = "Score: " + score;
+      ball.style.display = "none";
+      ball.style.top = "auto";
+    }, 600);
+  }
+
+  moveMarker();
+</script>
+
+</body>
+</html>
