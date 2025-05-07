@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Free Throw Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    #hoop {
+      width: 200px;
+      height: 20px;
+      background-color: orange;
+      margin: 20px auto;
+      position: relative;
+    }
+    #marker {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+    }
+    #score {
+      font-size: 24px;
+      margin: 10px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🏀 Free Throw Game</h1>
+<div id="score">Score: 0</div>
+<div id="hoop">
+  <div id="marker"></div>
+</div>
+<button onclick="shoot()">Shoot!</button>
+
+<script>
+  let marker = document.getElementById("marker");
+  let hoop = document.getElementById("hoop");
+  let position = 0;
+  let direction = 2;
+  let score = 0;
+
+  function moveMarker() {
+    position += direction;
+    if (position > 180 || position < 0) direction *= -1;
+    marker.style.left = position + "px";
+    requestAnimationFrame(moveMarker);
+  }
+
+  function shoot() {
+    if (position > 90 && position < 110) {
+      score++;
+      alert("🏀 Nice shot!");
+    } else {
+      score = 0;
+      alert("❌ Missed!");
+    }
+    document.getElementById("score").textContent = "Score: " + score;
+  }
+
+  moveMarker();
+</script>
+
+</body>
+</html>
